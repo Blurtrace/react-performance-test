@@ -9,14 +9,24 @@ export const Navbar: React.FC = () => {
     <header style={styles.header}>
       <div style={styles.container}>
         <Link to="/" style={styles.logo}>
-          🌆 PlanCity
+          PlanCity
         </Link>
         <nav style={styles.nav}>
           <Link to="/" style={styles.link}>Inicio</Link>
           <Link to="/events" style={styles.link}>Eventos</Link>
-          <Link to="/categories" style={styles.link}>Categorías</Link>
+          <Link to="/categories" style={styles.link}>Categorias</Link>
           {isAuthenticated && (
-            <Link to="/favorites" style={styles.link}>Mis Favoritos ❤️</Link>
+            <Link to="/favorites" style={styles.link}>Mis Favoritos</Link>
+          )}
+          {role === 'admin' && (
+            <>
+              <Link to="/admin/categories" style={styles.adminNavLink}>
+                Admin Categorias
+              </Link>
+              <Link to="/admin/events" style={styles.adminNavLink}>
+                Admin Eventos
+              </Link>
+            </>
           )}
           {isAuthenticated ? (
             <div style={styles.userInfo}>
@@ -26,11 +36,11 @@ export const Navbar: React.FC = () => {
                   [{role?.toUpperCase() || 'USER'}]
                 </span>
               </span>
-              <button onClick={() => logout()} style={styles.logoutButton}>Cerrar Sesión</button>
+              <button onClick={() => logout()} style={styles.logoutButton}>Cerrar Sesion</button>
             </div>
           ) : (
             <div style={styles.authButtons}>
-              <Link to="/login" style={styles.loginLink}>Iniciar Sesión</Link>
+              <Link to="/login" style={styles.loginLink}>Iniciar Sesion</Link>
               <Link to="/register" style={styles.registerLink}>Registrarse</Link>
             </div>
           )}
@@ -69,6 +79,14 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#ffffff',
     textDecoration: 'none',
     fontWeight: 500,
+  },
+  adminNavLink: {
+    color: '#00d2ff',
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    border: '1px solid #00d2ff',
+    padding: '0.3rem 0.6rem',
+    borderRadius: '4px',
   },
   authButtons: {
     display: 'flex',
@@ -128,4 +146,5 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 'bold',
   },
 };
+
 

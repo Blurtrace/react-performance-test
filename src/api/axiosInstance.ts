@@ -1,6 +1,8 @@
 import axios from 'axios';
 import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { STORAGE_KEYS, DEFAULT_API_URL } from '../utils/constants';
+import { normalizeApiError } from '../utils/apiError';
+import { triggerToast } from '../context/ToastContext';
 
 // Configuración de la URL base desde las variables de entorno Vite
 const baseURL = import.meta.env.VITE_API_URL || DEFAULT_API_URL;
@@ -35,6 +37,11 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
+    const normalizedError = normalizeApiError(error);
+    
+    // Feedback visual
+    triggerToast(normalizedError.message, 'error');
+
     if (error.response) {
       // Manejo de token expirado o no autorizado (401)
       if (error.response.status === 401) {
